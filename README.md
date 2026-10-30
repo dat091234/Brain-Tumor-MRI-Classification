@@ -1,9 +1,10 @@
 # Brain Tumor MRI Classification With Models
 
-A deep learning project that compares four architectures for classifying brain MRI images into four categories: glioma, meningioma, pituitary tumor, and no tumor
+A deep learning project that compares four architectures for classifying brain MRI images into four categories: glioma, meningioma, pituitary tumor, and no tumor.
 
-The project explores progressive fine-tuning strategies, evaluates model performance on a held-out test set, and uses visualization techniques **(Grad-CAM)** to investigate model predictions across both convolutional and Vision Transformer backbones
+The project explores progressive fine-tuning strategies, evaluates model performance on a held-out test set, and uses visualization techniques **(Grad-CAM)** to investigate model predictions across both convolutional and Vision Transformer backbones.
 
+For the full implementation, phase-by-phase training logs, confusion matrices, and cross-architecture Grad-CAM visualizations, please check out the [Kaggle notebook](https://www.kaggle.com/code/onphct/brain-tumor-mri-classification-with-models).
 ## Models and Experiments
 
 The following architectures are evaluated:
@@ -13,7 +14,7 @@ The following architectures are evaluated:
 - **DenseNet121**
 - **DINOv3 ViT-S/16**
 
-Beyond training a baseline CNN from scratch, the experiments investigate a **3-phase progressive fine-tuning strategy** for the pretrained models: starting from linear probing (training only the classification head) and gradually unfreezing deeper layers/blocks with decayed learning rates
+Beyond training a baseline CNN from scratch, the experiments investigate a **3-phase progressive fine-tuning strategy** for the pretrained models: starting from linear probing (training only the classification head) and gradually unfreezing deeper layers/blocks with decayed learning rates.
 
 ## Dataset
 
@@ -26,14 +27,14 @@ The dataset contains 7,200 MRI images across four classes:
 - No tumor
 
 The data is organized into:
-- **Training & Validation:** 5,600 images, partitioned using an 80/20 stratified split (4,480 training and 1,120 validation images)
-- **Testing:** 1,600 images (400 per class), reserved strictly for final evaluation
+- **Training & Validation:** 5,600 images, partitioned using an 80/20 stratified split (4,480 training and 1,120 validation images).
+- **Testing:** 1,600 images (400 per class), reserved strictly for final evaluation.
 
 ## Evaluation and Explainability
 
-Model performance is evaluated using classification reports (Accuracy, Precision, Recall, F1-score) and confusion matrices **Grad-CAM** is implemented across all four architectures—including a custom patch-token reshaping pipeline for DINOv3—to compare attention regions on both correct and incorrect predictions
+Model performance is evaluated using classification reports (Accuracy, Precision, Recall, F1-score) and confusion matrices **Grad-CAM** is implemented across all four architectures—including a custom patch-token reshaping pipeline for DINOv3—to compare attention regions on both correct and incorrect predictions.
 
-Saved model checkpoints are reloaded during evaluation to ensure reproducibility without retraining
+Saved model checkpoints are reloaded during evaluation to ensure reproducibility without retraining.
 
 ## Results
 
@@ -47,13 +48,10 @@ The table below summarizes the final test set performance using the best validat
 | DINOv3 ViT-S/16 | Fine-tuned last 4 Transformer blocks & head (Phase 3) | 95.06% | 0.95 |
 
 ### Key Observations
-- **Progressive Fine-Tuning Impact:** Unfreezing deeper blocks in Phases 2 and 3 yielded substantial validation accuracy gains (~6–8% improvement) over Phase 1 feature extraction across all pretrained backbones
-- **Missed Tumor Detection (False Negatives):** All three pretrained models correctly identified 100% (400/400) of tumor-free images However, **DINOv3 ViT-S/16** achieved the lowest rate of tumor images misclassified as `notumor` (18 cases), outperforming ResNet18 (26 cases), DenseNet121 (39 cases), and the Custom CNN (133 cases)
-- **Challenging Classes:** Across all models, `glioma` was the most difficult class to distinguish, most frequently confused with `meningioma`
 
-## Notebook
-
-For the full implementation, phase-by-phase training logs, confusion matrices, and cross-architecture Grad-CAM visualizations, please check out the [Kaggle notebook](https://www.kaggle.com/code/onphct/brain-tumor-mri-classification-with-models).
+- **Progressive Fine-Tuning Impact:** Unfreezing deeper blocks in Phases 2 and 3 yielded substantial validation accuracy gains (~6–8% improvement) over Phase 1 feature extraction across all pretrained backbones.
+- **Missed Tumor Detection (False Negatives):** All three pretrained models correctly identified 100% (400/400) of tumor-free images However, **DINOv3 ViT-S/16** achieved the lowest rate of tumor images misclassified as `notumor` (18 cases), outperforming ResNet18 (26 cases), DenseNet121 (39 cases), and the Custom CNN (133 cases).
+- **Challenging Classes:** Across all models, `glioma` was the most difficult class to distinguish, most frequently confused with `meningioma`.
 
 ## Limitations and Future Work
 
