@@ -1,0 +1,2 @@
+# Treat Jupyter Notebooks as documentation/not detectable in repo language stats
+*.ipynb linguist-detectable=false
